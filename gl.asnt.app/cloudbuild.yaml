@@ -1,0 +1,30 @@
+steps:
+    - id: 'build image'
+      name: 'gcr.io/cloud-builders/docker'
+      args: 
+        - build
+        - -t
+        - gcr.io/$PROJECT_ID/glasntapp
+        - '.'
+
+    - id: 'push image'
+      name: 'gcr.io/cloud-builders/docker'
+      args: 
+        - push 
+        - gcr.io/$PROJECT_ID/glasntapp
+
+    - id: 'deploy service'
+      name: 'gcr.io/cloud-builders/docker'
+      args: 
+        - run
+        - deploy
+        - glasntapp
+        - '--image'
+        - gcr.io/$PROJECT_ID/glasntapp
+        - '--region'
+        - us-central1
+        - '--platform'
+        - managed
+        - '--allow-unauthenticated'
+images:
+- gcr.io/$PROJECT_ID/glasntapp
